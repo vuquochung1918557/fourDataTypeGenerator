@@ -1,5 +1,6 @@
 import random
 import string
+import json
 from flask_cors import CORS, cross_origin
 from flask_restful import Resource
 
@@ -23,11 +24,37 @@ class FourTypeOfData(Resource):
     @cross_origin()
     def get(self):
         result = ''
-        for x in range(0, 43000):
-            result =  result + self.get_four_type_of_data()
-        return result
-        # f=open('output.txt','w')
-        # f.write(42003*self.get_four_type_of_data())
-        # f.close()
+        randomString = 0
+        randomFloat = 0
+        randomIntegers = 0
+        randomAlphabet = 0
+        for x in range(0, 150000):
+            decision = random.randint(1,4)
+            data = ''
+            if decision == 1:
+                data = self.get_random_string(10)
+                randomString = randomString + 1
+            elif decision == 2:
+                data = self.get_random_float()
+                randomFloat =randomFloat + 1
+            elif decision == 3:
+                data = self.get_random_integers()
+                randomIntegers = randomIntegers +1
+            elif decision == 4:
+                data =  self.get_random_alphabet()
+                randomAlphabet = randomAlphabet +1
+                if result == '':
+                    result =  data
+                else:
+                    result =  result + ',' + data
+            
+        a = {
+            'randomAlphabet': randomAlphabet,
+            'randomFloat':randomFloat,
+            'randomIntegers': randomIntegers,
+            'randomString': randomString,
+            'result': result
+        }
+        return json.dumps(a)
 
     

@@ -21,17 +21,23 @@ function Home({
   },
 }: Props) {
   const [data, setData] = useState('');
+  const [show, setShow] = useState(false);
+  const [showReport, setShowReport] = useState(false);
   const handlesGenerateButtonClick = useCallback(
     (event: SyntheticEvent<>) => {
       event && event.preventDefault();
+      setShow(false);
       axios.get('http://127.0.0.1:5000/theAPI/')
       .then(response => {
         setData(response.data);
-        
-      var element = document.getElementById('downloadLink');
-      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
-      element.setAttribute('download', "output.txt");
+        setShow(true);
       });
+    },
+  );
+  const handlesReportButtonClick = useCallback(
+    (event: SyntheticEvent<>) => {
+      event && event.preventDefault();
+      setShowReport(true)
     },
   );
   useEffect(() => {
@@ -50,18 +56,39 @@ function Home({
           Generate
         </button>
       </div>
-
-      <div className="row">
-        <a id="downloadLink">Download now</a>
+      { show 
+      ? 
+      <div>
+        &nbsp;
+      <div className="row"> 
+        <a id="downloadLink" 
+        href={'data:text/plain;charset=utf-8,' + encodeURIComponent(data.result)}
+        download='output.txt'>Download now</a>
       </div>
-
-      <div className="row">
-        
+      &nbsp;
+      <div className="row"> 
+        <button 
+          onClick={handlesReportButtonClick}
+          className="btn btn-danger">
+          Report
+        </button>
       </div>
+      &nbsp;
+        { showReport 
+        ?
+        <div className="row"> 
+          <p>Alphabet string: {data.randomAlphabet}</p>
+          <p>Real numbers: {data.randomFloat}</p>
+          <p>Integers: {data.randomIntegers}</p>
+          <p>Alphabetnumerics: {data.randomString}</p>
+        </div> 
+        :
+        null
 
-      <div className="row">
-        
+        }
       </div>
+        : null
+     }
     </AnimatedView>
   );
 }

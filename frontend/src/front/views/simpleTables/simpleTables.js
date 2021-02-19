@@ -413,7 +413,7 @@ function SimpleTables({
                 <tbody>
                   <tr>
                     <td>183</td>
-                    <td>John Doe</td>
+                    <td>Evaluator</td>
                     <td>11-7-2014</td>
                     <td>
                       <span className="label label-success">Approved</span>
