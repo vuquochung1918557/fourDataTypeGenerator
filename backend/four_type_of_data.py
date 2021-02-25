@@ -28,7 +28,7 @@ class FourTypeOfData(Resource):
         randomFloat = 0
         randomIntegers = 0
         randomAlphabet = 0
-        for x in range(0, 150000):
+        for x in range(0, 605000):
             decision = random.randint(1,4)
             data = ''
             if decision == 1:

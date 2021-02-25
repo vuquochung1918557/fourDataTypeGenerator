@@ -21,8 +21,10 @@ function Home({
   },
 }: Props) {
   const [data, setData] = useState('');
+  const [truncated, setTruncated] = useState('');
   const [show, setShow] = useState(false);
   const [showReport, setShowReport] = useState(false);
+  
   const handlesGenerateButtonClick = useCallback(
     (event: SyntheticEvent<>) => {
       event && event.preventDefault();
@@ -30,6 +32,12 @@ function Home({
       axios.get('http://127.0.0.1:5000/theAPI/')
       .then(response => {
         setData(response.data);
+        let enc = new TextEncoder();
+        let dec = new TextDecoder('utf-8');
+        let uint8 = enc.encode(response.data.result)
+        let section = uint8.slice(0,2000000)
+        let result = dec.decode(section);
+        setTruncated(result)
         setShow(true);
       });
     },
@@ -62,7 +70,7 @@ function Home({
         &nbsp;
       <div className="row"> 
         <a id="downloadLink" 
-        href={'data:text/plain;charset=utf-8,' + encodeURIComponent(data.result)}
+        href={'data:text/plain;charset=utf-8,' + encodeURIComponent(truncated)}
         download='output.txt'>Download now</a>
       </div>
       &nbsp;
